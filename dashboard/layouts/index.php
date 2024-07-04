@@ -1,3 +1,6 @@
+<?php
+require "functions.php";
+?>
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-menu-fixed layout-compact" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
@@ -157,7 +160,13 @@
                                                                     <span class="d-block mb-1">Pendaftar</span>
                                                                 </div>
                                                                 <div class="row">
-                                                                    <h5 class="card-title text-nowrap mb-2">2000</h5>
+                                                                    <h5 class="card-title text-nowrap mb-2">
+                                                                        <?php
+                                                                        $pendaftar = mysqli_query($conn, "SELECT * FROM info_pendaftaran WHERE status ='TERDAFTAR' ");
+                                                                        $jumlah_pendaftar = mysqli_num_rows($pendaftar);
+                                                                        echo $jumlah_pendaftar;
+                                                                        ?>
+                                                                    </h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -186,7 +195,13 @@
                                                                     <span class="d-block mb-1">Lolos Seleksi Berkas</span>
                                                                 </div>
                                                                 <div class="row">
-                                                                    <h5 class="card-title text-nowrap mb-2">2000</h5>
+                                                                    <h5 class="card-title text-nowrap mb-2">
+                                                                        <?php
+                                                                        $lolos_berkas = mysqli_query($conn, "SELECT * FROM info_pendaftaran WHERE status ='LOLOS BERKAS' ");
+                                                                        $jumlah_lolos_berkas = mysqli_num_rows($lolos_berkas);
+                                                                        echo $jumlah_lolos_berkas;
+                                                                        ?>
+                                                                    </h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -215,7 +230,13 @@
                                                                     <span class="d-block mb-1">Interview</span>
                                                                 </div>
                                                                 <div class="row">
-                                                                    <h5 class="card-title text-nowrap mb-2">2000</h5>
+                                                                    <h5 class="card-title text-nowrap mb-2">
+                                                                        <?php
+                                                                        $interview = mysqli_query($conn, "SELECT * FROM info_pendaftaran WHERE status ='INTERVIEW' ");
+                                                                        $jumlah_interview = mysqli_num_rows($interview);
+                                                                        echo $jumlah_interview;
+                                                                        ?>
+                                                                    </h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -244,7 +265,13 @@
                                                                     <span class="d-block mb-1">Offering</span>
                                                                 </div>
                                                                 <div class="row">
-                                                                    <h5 class="card-title text-nowrap mb-2">2000</h5>
+                                                                    <h5 class="card-title text-nowrap mb-2">
+                                                                        <?php
+                                                                        $offering = mysqli_query($conn, "SELECT * FROM info_pendaftaran WHERE status ='DITERIMA' ");
+                                                                        $jumlah_offering = mysqli_num_rows($offering);
+                                                                        echo $jumlah_offering;
+                                                                        ?>
+                                                                    </h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -278,40 +305,31 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody class="table-border-bottom-0">
-                                                        <tr>
-                                                            <td>Nama </td>
-                                                            <td>Posisi</td>
-                                                            <td>Divisi </td>
-                                                            <td>Waktu </td>
-                                                            <td>
-                                                                <div class="dropdown">
-                                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                                                    </button>
-                                                                    <div class="dropdown-menu">
-                                                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                                                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
+                                                        <?php
+                                                        $interview_hari_ini = mysqli_query($conn, "SELECT * FROM info_pendaftaran WHERE DATE_FORMAT(tanggal_interview, '%d') = DAY(curdate())");
+                                                        while ($hasil = mysqli_fetch_array($interview_hari_ini)) {
+                                                            $nik = $hasil["NIK"];
+                                                            $nama_lengkap = mysqli_query($conn, "SELECT nama_lengkap FROM pelamar WHERE NIK = '$nik' ");
+                                                            $nama = mysqli_fetch_array($nama_lengkap);
+                                                        ?>
+                                                            <tr>
+                                                                <td><?= $nama["nama_lengkap"]; ?></td>
+                                                                <td><?= $hasil["posisi"]; ?></td>
+                                                                <td><?= $hasil["divisi"]; ?></td>
+                                                                <td><?= $hasil["tanggal_interview"]; ?> </td>
+                                                                <td>
+                                                                    <div class="dropdown">
+                                                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                                                        </button>
+                                                                        <div class="dropdown-menu">
+                                                                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                                                                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Nama </td>
-                                                            <td>Posisi</td>
-                                                            <td>Divisi </td>
-                                                            <td>Waktu </td>
-                                                            <td>
-                                                                <div class="dropdown">
-                                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                                                    </button>
-                                                                    <div class="dropdown-menu">
-                                                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                                                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
+                                                                </td>
+                                                            </tr>
+                                                        <?php } ?>
                                                     </tbody>
                                                 </table>
                                             </div>

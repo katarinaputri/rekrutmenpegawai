@@ -1,3 +1,6 @@
+<?php
+require "functions.php";
+?>
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-menu-fixed layout-compact" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
@@ -137,56 +140,36 @@
                         <div class="row">
                             <div class="col-12 col-md-8 col-lg order-3 order-md-2">
                                 <div class="row">
-                                    <div class="col-3">
-                                        <div class="card mb-4">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-10">
-                                                        <h5 class="card-title">Posisi</h5>
-                                                        <div class="card-subtitle text-muted mb-3">Divisi</div>
-                                                    </div>
-                                                    <div class="col-2">
-                                                        <div class="dropdown flex-end">
-                                                            <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                                                <a class="dropdown-item" href="javascript:void(0);">Tutup Lowongan</a>
+                                    <?php
+                                    $data_lowongan = mysqli_query($conn, "SELECT * FROM info_lowongan");
+                                    while ($hasil = mysqli_fetch_array($data_lowongan)) {
+                                    ?>
+                                        <div class="col-3">
+                                            <div class="card mb-4">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-10">
+                                                            <h5 class="card-title"><?= $hasil["posisi"]; ?></h5>
+                                                            <div class="card-subtitle text-muted mb-3"><?= $hasil["divisi"]; ?></div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <div class="dropdown flex-end">
+                                                                <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                                                </button>
+                                                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+                                                                    <a class="dropdown-item" href="javascript:void(0);">Tutup Lowongan</a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <p class="card-text">
+                                                        <?= $hasil["deskripsi"]; ?> </p>
+                                                    <a href="javascript:void(0)" class="card-link">Selengkapnya!</a>
                                                 </div>
-                                                <p class="card-text">
-                                                    Some quick example text to build on the card title and make up the bulk of the card's content.
-                                                </p>
-                                                <a href="javascript:void(0)" class="card-link">Selengkapnya!</a>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="card mb-4">
-                                            <div class="card-body">
-                                                <h5 class="card-title">Posisi</h5>
-                                                <div class="card-subtitle text-muted mb-3">Divisi</div>
-                                                <p class="card-text">
-                                                    Some quick example text to build on the card title and make up the bulk of the card's content.
-                                                </p>
-                                                <a href="javascript:void(0)" class="card-link">Selengkapnya!</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="card mb-4">
-                                            <div class="card-body">
-                                                <h5 class="card-title">Posisi</h5>
-                                                <div class="card-subtitle text-muted mb-3">Divisi</div>
-                                                <p class="card-text">
-                                                    Some quick example text to build on the card title and make up the bulk of the card's content.
-                                                </p>
-                                                <a href="javascript:void(0)" class="card-link">Selengkapnya!</a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>

@@ -1,3 +1,25 @@
+<?php
+require "functions.php";
+
+if (isset($_POST["input_data"])) {
+    // cek apakah data berhasil ditambahkan atau tidak
+    if (inputdata($_POST) > 0) {
+        echo "
+			<script>
+				alert('Transaksi Peminjaman Berhasil Ditambahkan!');
+				document.location.href = 'input_data.php';
+			</script>
+		";
+    } else {
+        echo "
+			<script>
+				alert('Transaksi Peminjaman Tidak Berhasil Ditambahkan!');
+				document.location.href = 'input_data.php';
+			</script>
+		";
+    }
+}
+?>
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-menu-fixed layout-compact" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
@@ -143,50 +165,50 @@
                                         <h5 class="mb-0">Input Data Lowongan</h5>
                                     </div>
                                     <div class="card-body">
-                                        <form>
+                                        <form method="post" action="">
                                             <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-posisi">Posisi</label>
+                                                <label class="col-sm-2 col-form-label" for="posisi">Posisi</label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" class="form-control" id="basic-default-posisi" placeholder="Posisi" />
+                                                    <input type="text" class="form-control" id="posisi" placeholder="Posisi" name="posisi" required />
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-divisi">Divisi</label>
+                                                <label class="col-sm-2 col-form-label" for="divisi">Divisi</label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" class="form-control" id="basic-default-divisi" placeholder="Divisi" />
+                                                    <input type="text" class="form-control" id="divisi" placeholder="Divisi" name="divisi" required />
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-deskripsi">Deskripsi</label>
+                                                <label class="col-sm-2 col-form-label" for="deskripsi">Deskripsi</label>
                                                 <div class="col-sm-10">
                                                     <div class="input-group input-group-merge">
-                                                        <textarea id="basic-default-deskripsi" class="form-control" placeholder="Deskripsi singkat mengenai lowongan yang dibuka" aria-describedby="basic-icon-default-message2"></textarea>
+                                                        <textarea id="deskripsi" class="form-control" placeholder="Deskripsi singkat mengenai lowongan yang dibuka" name="deskripsi" required></textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-jobdesk">Jobdesk</label>
+                                                <label class="col-sm-2 col-form-label" for="jobdesk">Jobdesk</label>
                                                 <div class="col-sm-10">
-                                                    <textarea id="basic-default-jobdesk" class="form-control" placeholder="Jabarkan jobdesk dari lowongan tersebut" aria-describedby="basic-icon-default-message2"></textarea>
+                                                    <textarea id="jobdesk" class="form-control" placeholder="Jabarkan jobdesk dari lowongan tersebut" name="jobdesk" required></textarea>
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-syarat">Syarat</label>
+                                                <label class="col-sm-2 col-form-label" for="syarat">Syarat</label>
                                                 <div class="col-sm-10">
-                                                    <textarea id="basic-default-syarat" class="form-control" placeholder="Jabarkan syarat dari lowongan tersebut" aria-describedby="basic-icon-default-message2"></textarea>
+                                                    <textarea id="syarat" class="form-control" placeholder="Jabarkan syarat dari lowongan tersebut" name="syarat" required></textarea>
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-lokasi">Lokasi Penempatan</label>
+                                                <label class="col-sm-2 col-form-label" for="lokasi">Lokasi Penempatan</label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" class="form-control" id="basic-default-lokasi" placeholder="Lokasi" />
+                                                    <input type="text" class="form-control" id="lokasi" placeholder="Lokasi" name="lokasi" required />
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-tipe-lamaran">Tipe Lamaran</label>
+                                                <label class="col-sm-2 col-form-label" for="tipe-lamaran">Tipe Lamaran</label>
                                                 <div class="col-sm-10">
-                                                    <select class="form-select" id="basic-default-tipe-lamaran" aria-label="Default select example">
-                                                        <option selected>Tipe Lamaran</option>
+                                                    <select class="form-select" id="tipe-lamaran" name="tipelamaran" required>
+                                                        <option disabled selected>Tipe Lamaran</option>
                                                         <option value="permanent">Permanent</option>
                                                         <option value="contract">Contract</option>
                                                         <option value="intern">Internship/Magang</option>
@@ -195,7 +217,7 @@
                                             </div>
                                             <div class="row justify-content-end">
                                                 <div class="col-sm-10">
-                                                    <button type="submit" class="btn btn-primary">Send</button>
+                                                    <button type="submit" class="btn btn-primary" name="input_data">Send</button>
                                                 </div>
                                             </div>
                                         </form>
