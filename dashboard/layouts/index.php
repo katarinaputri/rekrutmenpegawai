@@ -309,7 +309,7 @@ require "functions.php";
                                                         $interview_hari_ini = mysqli_query($conn, "SELECT * FROM info_pendaftaran WHERE DATE_FORMAT(tanggal_interview, '%d') = DAY(curdate())");
                                                         while ($hasil = mysqli_fetch_array($interview_hari_ini)) {
                                                             $nik = $hasil["NIK"];
-                                                            $nama_lengkap = mysqli_query($conn, "SELECT nama_lengkap FROM pelamar WHERE NIK = '$nik' ");
+                                                            $nama_lengkap = mysqli_query($conn, "SELECT * FROM pelamar WHERE NIK = '$nik' ");
                                                             $nama = mysqli_fetch_array($nama_lengkap);
                                                         ?>
                                                             <tr>
