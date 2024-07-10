@@ -74,3 +74,25 @@ function inputdata($data)
 
     return mysqli_affected_rows($conn);
 }
+
+function tutuplowongan($data)
+{
+    global $conn;
+
+    $id = $data['id'];
+
+    mysqli_query($conn, "UPDATE info_lowongan SET status = '0' WHERE id = '$id'");
+
+    return mysqli_affected_rows($conn);
+}
+
+function bukalowongan($data)
+{
+    global $conn;
+
+    $id = $data['id'];
+
+    mysqli_query($conn, "UPDATE info_lowongan SET status = '1' WHERE id = '$id'");
+
+    return mysqli_affected_rows($conn);
+}

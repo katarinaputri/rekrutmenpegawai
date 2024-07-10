@@ -1,3 +1,7 @@
+<?php
+require "functions.php";
+
+?>
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-menu-fixed layout-compact" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
@@ -24,7 +28,7 @@
 
                     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                         <div class="navbar-nav me-auto d-flex justify-content-center">
-                            <a class="nav-item nav-link active" href="javascript:void(0)">Home</a>
+                            <a class="nav-item nav-link active" href="daftar_lowongan.php">Home</a>
                         </div>
                     </div>
 
@@ -76,42 +80,30 @@
                 <div class="content-wrapper">
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        <div class="row">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-9">
-                                            <h5 class="card-title">Card title</h5>
-                                            <div class="card-subtitle text-muted mb-3">Card subtitle</div>
+                        <?php
+                        $data_lowongan = mysqli_query($conn, "SELECT * FROM info_lowongan WHERE status = 1");
+                        while ($hasil = mysqli_fetch_array($data_lowongan)) {
+                        ?>
+                            <div class="row">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <h5 class="card-title"><?= $hasil["posisi"]; ?></h5>
+                                                <div class="card-subtitle text-muted mb-3"><?= $hasil["divisi"]; ?></div>
+                                            </div>
+                                            <div class="col-3 d-flex justify-content-end align-middle">
+                                                <a href="detail_lowongan.php?id=<?= $hasil["id"] ?>" class="card-link">Selengkapnya</a>
+                                            </div>
                                         </div>
-                                        <div class="col-3 d-flex justify-content-end align-middle">
-                                            <a href="detail_lowongan.php" class="card-link">Selengkapnya</a>
-                                        </div>
+                                        <p class="card-text">
+                                            <?= $hasil["deskripsi"]; ?> </p>
                                     </div>
-                                    <p class="card-text">
-                                        Some quick example text to build on the card title and make up the bulk of the card's content.
-                                    </p>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-9">
-                                            <h5 class="card-title">Card title</h5>
-                                            <div class="card-subtitle text-muted mb-3">Card subtitle</div>
-                                        </div>
-                                        <div class="col-3 d-flex justify-content-end align-middle">
-                                            <a href="javascript:void(0)" class="card-link">Selengkapnya</a>
-                                        </div>
-                                    </div>
-                                    <p class="card-text">
-                                        Some quick example text to build on the card title and make up the bulk of the card's content.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                        <?php
+                        }
+                        ?>
                     </div>
                     <!-- / Content -->
 

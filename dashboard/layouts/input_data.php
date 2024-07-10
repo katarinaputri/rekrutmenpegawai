@@ -4,19 +4,9 @@ require "functions.php";
 if (isset($_POST["input_data"])) {
     // cek apakah data berhasil ditambahkan atau tidak
     if (inputdata($_POST) > 0) {
-        echo "
-			<script>
-				alert('Transaksi Peminjaman Berhasil Ditambahkan!');
-				document.location.href = 'input_data.php';
-			</script>
-		";
+        $berhasil = true;
     } else {
-        echo "
-			<script>
-				alert('Transaksi Peminjaman Tidak Berhasil Ditambahkan!');
-				document.location.href = 'input_data.php';
-			</script>
-		";
+        $error = true;
     }
 }
 ?>
@@ -160,6 +150,15 @@ if (isset($_POST["input_data"])) {
                         <div class="row">
                             <!-- Basic Layout -->
                             <div class="col-xxl">
+                                <!-- ALERT -->
+                                <?php if (isset($error)) : ?>
+                                    <div class="alert alert-danger" role="alert">Gagal menambahkan data lowongan baru!</div>
+                                <?php endif; ?>
+                                <?php if (isset($berhasil)) : ?>
+                                    <div class="alert alert-success" role="alert">Berhasil menambahkan data lowongan baru!</div>
+                                <?php endif; ?>
+                                <!-- END ALERT -->
+
                                 <div class="card mb-4">
                                     <div class="card-header d-flex align-items-center justify-content-between">
                                         <h5 class="mb-0">Input Data Lowongan</h5>
@@ -181,21 +180,25 @@ if (isset($_POST["input_data"])) {
                                             <div class="row mb-3">
                                                 <label class="col-sm-2 col-form-label" for="deskripsi">Deskripsi</label>
                                                 <div class="col-sm-10">
-                                                    <div class="input-group input-group-merge">
-                                                        <textarea id="deskripsi" class="form-control" placeholder="Deskripsi singkat mengenai lowongan yang dibuka" name="deskripsi" required></textarea>
-                                                    </div>
+                                                    <textarea id="deskripsi" class="form-control" placeholder="Deskripsi singkat mengenai lowongan yang dibuka" name="deskripsi" required></textarea>
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
                                                 <label class="col-sm-2 col-form-label" for="jobdesk">Jobdesk</label>
                                                 <div class="col-sm-10">
                                                     <textarea id="jobdesk" class="form-control" placeholder="Jabarkan jobdesk dari lowongan tersebut" name="jobdesk" required></textarea>
+                                                    <div id="helpjobdesk" class="form-text">
+                                                        Penulisan Jobdesk dipisahkan oleh tanda '-'
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
                                                 <label class="col-sm-2 col-form-label" for="syarat">Syarat</label>
                                                 <div class="col-sm-10">
                                                     <textarea id="syarat" class="form-control" placeholder="Jabarkan syarat dari lowongan tersebut" name="syarat" required></textarea>
+                                                    <div id="helpsyarat" class="form-text">
+                                                        Penulisan Syarat dipisahkan oleh tanda '-'
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="row mb-3">

@@ -112,7 +112,7 @@ if (isset($_POST["regis"])) {
                                     <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms" required />
                                     <label class="form-check-label" for="terms-conditions">
                                         I agree to
-                                        <a type="button" data-bs-toggle="modal" data-bs-target="#modalScrollable" href="#modalScrollable">
+                                        <a type="button" data-bs-toggle="modal" data-bs-target="#ppt" href="#ppt">
                                             privacy policy & terms
                                         </a>
 
@@ -133,11 +133,11 @@ if (isset($_POST["regis"])) {
                 </div>
 
                 <!-- Modal -->
-                <div class="modal fade" id="modalScrollable" tabindex="-1" aria-hidden="true">
+                <div class="modal fade" id="ppt" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="modalScrollableTitle">Modal title</h5>
+                                <h5 class="modal-title" id="pptTitle">Privacy Policy & Terms</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -227,7 +227,6 @@ if (isset($_POST["regis"])) {
                                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                                     Close
                                 </button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
                             </div>
                         </div>
                     </div>

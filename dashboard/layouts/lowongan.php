@@ -1,5 +1,21 @@
 <?php
 require "functions.php";
+
+if (isset($_POST["tutup"])) {
+    if (tutuplowongan($_POST) > 0) {
+        $berhasil = true;
+    } else {
+        $error = true;
+    }
+}
+
+if (isset($_POST["buka"])) {
+    if (bukalowongan($_POST) > 0) {
+        $berhasil = true;
+    } else {
+        $error = true;
+    }
+}
 ?>
 <!DOCTYPE html>
 
@@ -137,39 +153,174 @@ require "functions.php";
                     <!-- Content -->
 
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        <div class="row">
-                            <div class="col-12 col-md-8 col-lg order-3 order-md-2">
-                                <div class="row">
-                                    <?php
-                                    $data_lowongan = mysqli_query($conn, "SELECT * FROM info_lowongan");
-                                    while ($hasil = mysqli_fetch_array($data_lowongan)) {
-                                    ?>
-                                        <div class="col-3">
-                                            <div class="card mb-4">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-10">
-                                                            <h5 class="card-title"><?= $hasil["posisi"]; ?></h5>
-                                                            <div class="card-subtitle text-muted mb-3"><?= $hasil["divisi"]; ?></div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <div class="dropdown flex-end">
-                                                                <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                                                </button>
-                                                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                                                    <a class="dropdown-item" href="javascript:void(0);">Tutup Lowongan</a>
+                        <div class="nav-align-top mb-4">
+                            <ul class="nav nav-pills mb-3" role="tablist">
+                                <li class="nav-item">
+                                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#masihbuka" aria-controls="navs-pills-top-home" aria-selected="true">
+                                        Masih Buka
+                                    </button>
+                                </li>
+                                <li class="nav-item">
+                                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#sudahtutup" aria-controls="navs-pills-top-profile" aria-selected="false">
+                                        Sudah Tutup
+                                    </button>
+                                </li>
+                            </ul>
+                            <!-- ALERT -->
+                            <?php if (isset($error)) : ?>
+                                <div class="alert alert-danger" role="alert">Gagal menutup/membuka kembali lowongan!</div>
+                            <?php endif; ?>
+                            <?php if (isset($berhasil)) : ?>
+                                <div class="alert alert-success" role="alert">Berhasil menutup/membuka kembali lowongan!</div>
+                            <?php endif; ?>
+                            <!-- END ALERT -->
+
+                            <div class="tab-content" style="background: none;">
+
+                                <div class="tab-pane fade show active" id="masihbuka" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-12 col-md-8 col-lg order-3 order-md-2">
+                                            <div class="row">
+                                                <?php
+                                                $data_lowongan = mysqli_query($conn, "SELECT * FROM info_lowongan WHERE status = 1");
+                                                while ($hasil = mysqli_fetch_array($data_lowongan)) {
+                                                ?>
+                                                    <div class="col-3">
+                                                        <div class="card mb-4">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="col-10">
+                                                                        <h5 class="card-title"><?= $hasil["posisi"]; ?></h5>
+                                                                        <div class="card-subtitle text-muted mb-3"><?= $hasil["divisi"]; ?></div>
+                                                                    </div>
+                                                                    <div class="col-2">
+                                                                        <div class="dropdown flex-end">
+                                                                            <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                                                            </button>
+                                                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+                                                                                <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#tutuplowongan<?= $hasil["id"]; ?>">Tutup Lowongan</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
+                                                                <p class="card-text">
+                                                                    <?php
+                                                                    $text = $hasil["deskripsi"];
+                                                                    $sentences = explode(".", $text);
+                                                                    $first_sentence = trim($sentences[0]);
+                                                                    echo $first_sentence . ".";
+                                                                    ?>
+                                                                </p>
+                                                                <a href="detail_lowongan.php?id=<?= $hasil["id"] ?>" class="card-link">Selengkapnya!</a>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <p class="card-text">
-                                                        <?= $hasil["deskripsi"]; ?> </p>
-                                                    <a href="javascript:void(0)" class="card-link">Selengkapnya!</a>
-                                                </div>
+
+                                                    <!-- MODAL TUTUP LOWONGAN -->
+                                                    <div class="modal fade" id="tutuplowongan<?= $hasil["id"]; ?>" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <form action="" method="post">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="modalToggleLabel">Konfirmasi Tutup Lowongan</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <input id="id" type="hidden" name="id" value="<?= $hasil["id"]; ?>">
+                                                                        Apakah Anda yakin ingin menutup lowongan dengan
+                                                                        posisi <b><?= $hasil["posisi"]; ?></b>
+                                                                        di divisi <b><?= $hasil["divisi"]; ?></b>?
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                                            Close
+                                                                        </button>
+                                                                        <button class="btn btn-primary" type="submit" name="tutup">
+                                                                            Tutup Lowongan
+                                                                        </button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
                                             </div>
                                         </div>
-                                    <?php } ?>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="sudahtutup" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-12 col-md-8 col-lg order-3 order-md-2">
+                                            <div class="row">
+                                                <?php
+                                                $data_lowongan = mysqli_query($conn, "SELECT * FROM info_lowongan WHERE status = 0");
+                                                while ($hasil = mysqli_fetch_array($data_lowongan)) {
+                                                ?>
+                                                    <div class="col-3">
+                                                        <div class="card mb-4">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="col-10">
+                                                                        <h5 class="card-title"><?= $hasil["posisi"]; ?></h5>
+                                                                        <div class="card-subtitle text-muted mb-3"><?= $hasil["divisi"]; ?></div>
+                                                                    </div>
+                                                                    <div class="col-2">
+                                                                        <div class="dropdown flex-end">
+                                                                            <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                                                            </button>
+                                                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+                                                                                <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#bukalagi<?= $hasil["id"]; ?>">Buka Kembali Lowongan</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <p class="card-text">
+                                                                    <?php
+                                                                    $text = $hasil["deskripsi"];
+                                                                    $sentences = explode(".", $text);
+                                                                    $first_sentence = trim($sentences[0]);
+                                                                    echo $first_sentence . ".";
+                                                                    ?>
+                                                                </p>
+                                                                <a href="detail_lowongan.php?id=<?= $hasil["id"] ?>" class="card-link">Selengkapnya!</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- MODAL Buka LOWONGAN -->
+                                                    <div class="modal fade" id="bukalagi<?= $hasil["id"]; ?>" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <form action="" method="post">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="modalToggleLabel">Konfirmasi Buka Kembali Lowongan</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <input id="id" type="hidden" name="id" value="<?= $hasil["id"]; ?>">
+                                                                        Apakah Anda yakin ingin membuka kembali lowongan dengan
+                                                                        posisi <b><?= $hasil["posisi"]; ?></b>
+                                                                        di divisi <b><?= $hasil["divisi"]; ?></b>?
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                                            Close
+                                                                        </button>
+                                                                        <button class="btn btn-primary" type="submit" name="buka">
+                                                                            Buka Lowongan
+                                                                        </button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

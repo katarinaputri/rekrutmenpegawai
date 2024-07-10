@@ -1,3 +1,7 @@
+<?php
+require "functions.php";
+
+?>
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-menu-fixed layout-compact" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
@@ -149,32 +153,48 @@
                                                             <th>Nama Pelamar</th>
                                                             <th>Posisi</th>
                                                             <th>Divisi</th>
+                                                            <th>Tanggal</th>
                                                             <th>Waktu</th>
                                                             <th>Actions</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody class="table-border-bottom-0">
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>Nama </td>
-                                                            <td>Posisi</td>
-                                                            <td>Divisi </td>
-                                                            <td>Waktu</td>
-                                                            <td>
-                                                                <div class="dropdown">
-                                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                                                    </button>
-                                                                    <div class="dropdown-menu">
-                                                                        <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-detail me-1'></i> Detail</a>
-                                                                        <a class="dropdown-item" href="javascript:void(0);"><i class='bx bxs-file-pdf me-1'></i> Link CV</a>
-                                                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-file me-1"></i> Link Portofolio</a>
-                                                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-check me-1"></i> Lolos</a>
-                                                                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-x me-1"></i> Tolak</a>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
+                                                        <?php
+                                                        $i = 1;
+                                                        $interview = mysqli_query($conn, "SELECT * FROM info_pendaftaran WHERE status = 'INTERVIEW' ");
+                                                        while ($hasil = mysqli_fetch_array($interview)) {
+                                                            $nik = $hasil["NIK"];
+                                                            $pelamar = mysqli_query($conn, "SELECT * FROM pelamar WHERE NIK = $nik ");
+                                                            while ($info_pelamar = mysqli_fetch_array($pelamar)) {
+                                                                $tanggal_interview = date_create($hasil["tanggal_interview"]);
+                                                        ?>
+
+                                                                <tr>
+                                                                    <td><?= $i; ?></td>
+                                                                    <td><?= $info_pelamar["nama_lengkap"]; ?></td>
+                                                                    <td><?= $hasil["posisi"]; ?></td>
+                                                                    <td><?= $hasil["divisi"]; ?></td>
+                                                                    <td><?= date_format($tanggal_interview, "Y/m/d"); ?></td>
+                                                                    <td><?= date_format($tanggal_interview, "H:i"); ?></td>
+                                                                    <td>
+                                                                        <div class="dropdown">
+                                                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                                                            </button>
+                                                                            <div class="dropdown-menu">
+                                                                                <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-detail me-1'></i> Detail</a>
+                                                                                <a class="dropdown-item" href="javascript:void(0);"><i class='bx bxs-file-pdf me-1'></i> Link CV</a>
+                                                                                <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-file me-1"></i> Link Portofolio</a>
+                                                                                <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-check me-1"></i> Lolos</a>
+                                                                                <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-x me-1"></i> Tolak</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                        <?php $i++;
+                                                            }
+                                                        } ?>
+
                                                     </tbody>
                                                 </table>
                                             </div>

@@ -1,3 +1,7 @@
+<?php
+require "functions.php";
+
+?>
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-menu-fixed layout-compact" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
@@ -44,51 +48,65 @@
                                 <div class="card mb-3">
                                     <img class="card-img-top" src="../assets/img/backgrounds/bg.jpg" alt="Card image cap" style="height: 90pt;" />
                                     <div class="card-body">
-                                        <div class="row position-relative">
-                                            <div class="col-9">
-                                                <h5 class="card-title">Card title</h5>
-                                                <div class="card-subtitle mb-2">Divisi</div>
-                                                <div class="card-subtitle text-muted mb-2">Lokasi</div>
-                                                <span class="badge bg-label-primary mb-3">Full Time</span>
-                                                <span class="badge bg-label-warning mb-3">Part Time</span>
-                                                <span class="badge bg-label-info mb-3">Contract</span>
-                                                <span class="badge bg-label-dark mb-3">Internship</span>
-                                            </div>
-                                            <div class="d-flex justify-content-end position-absolute top-50 translate-middle-y">
-                                                <button type="button" class="btn btn-outline-primary">Daftar Sekarang</button>
-                                            </div>
-                                        </div>
-                                        <p class="card-text">
-                                            This is a wider card with supporting text below as a natural lead-in to additional content. This
-                                            content is a little bit longer.
-                                        </p>
-                                        <h6 class="mt-5">Deskripsi Pekerjaan</h6>
-                                        <p class="card-text">
-                                            Memastikan berjalannya strategi warehouse sesuai dengan yang ditetapkan
-                                            Menganalisis efektivitas aktivitas warehouse dan kinerja karyawannya
-                                            Menjaga dan membuat laporan kedisiplinan, kehadiran, dan kinerja karyawan warehouse
-                                            Menerima sekaligus memeriksa barang yang datang di warehouse
-                                            Menyerahkan barang sesuai dengan permintaan pelanggan
-                                            Mengatur dan memeriksa secara berkala tempat penyimpanan dan inventaris
-                                            Menjamin prosedur yang berjalan di area warehouse telah sesuai dengan standar yang berlaku di perusahaan
-                                            Menentukan proses dan metode yang dapat meningkatkan kinerja warehouse
-                                            Membuat susunan kebutuhan karyawan sekaligus pengalokasian beban kerja.
-                                        </p>
-                                        <h6 class="mt-5">Kualifikasi</h6>
-                                        <p class="card-text">
-                                            Pendidikan minimum D3 segala jurusan
-                                            Usia antara 30 s/d 40 tahun
-                                            Memiliki pengalaman profesional di bidang pergudangan minimal 3 tahun
-                                            Memiliki pengalaman minimal sebagai Supervisor Warehouse setidaknya 2 tahun
-                                            Menguasai manajemen data
-                                            Menguasai fitur advance Ms Excel
-                                            Menguasai manajemen inventory dan delivery
-                                            Menguasai manajemen pergudangan baik online maupun offline
-                                            Memiliki kemampuan untuk mencari solusi atas permasalahan gudang
-                                            Good Interpersonal dan memiliki kemampuan komunikasi yang baik
-                                            Mampu bekerja dibawah tekanan
-                                            Memiliki jiwa kepemimpinan yang tinggi
-                                        </p>
+                                        <?php
+                                        if (isset($_GET['id'])) {
+                                            $id = $_GET['id'];
+                                            $data_lowongan = mysqli_query($conn, "SELECT * FROM info_lowongan WHERE id = '$id'");
+                                            while ($hasil = mysqli_fetch_array($data_lowongan)) {
+                                                $label = $hasil["tipe_lamaran"];
+                                        ?>
+                                                <div class="row position-relative">
+                                                    <div class="col-9">
+                                                        <h5 class="card-title"><?= $hasil["posisi"]; ?></h5>
+                                                        <div class="card-subtitle mb-2"><?= $hasil["divisi"]; ?></div>
+                                                        <div class="card-subtitle text-muted mb-2"><?= $hasil["lokasi_penempatan"]; ?></div>
+                                                        <?php if ($label == "permanent") { ?>
+                                                            <span class="badge bg-label-primary mb-3">Full Time</span>
+                                                        <?php } else if ($label == "contract") { ?>
+                                                            <span class="badge bg-label-warning mb-3">Contract</span>
+                                                        <?php } else if ($label == "intern") { ?>
+                                                            <span class="badge bg-label-dark mb-3">Internship</span>
+                                                        <?php } ?>
+                                                    </div>
+                                                    <div class="d-flex justify-content-end position-absolute top-50 translate-middle-y">
+                                                        <button type="button" class="btn btn-outline-primary">Daftar Sekarang</button>
+                                                    </div>
+                                                </div>
+                                                <p class="card-text">
+                                                    <?= $hasil["deskripsi"]; ?>
+                                                </p>
+                                                <h6 class="mt-5">Deskripsi Pekerjaan</h6>
+                                                <?php
+                                                $jobdesk = $hasil["jobdesk"];
+                                                $jobdeskarray = explode("-", $jobdesk);
+                                                array_shift($jobdeskarray);
+                                                ?>
+                                                <p class="card-text">
+                                                    <?php if (!empty($jobdeskarray)) {
+                                                        echo "<ol>";
+                                                        foreach ($jobdeskarray as $a) {
+                                                            echo "<li>" . htmlspecialchars(trim($a)) . "</li>";
+                                                        }
+                                                        echo "</ol>";
+                                                    } ?>
+                                                </p>
+                                                <h6 class="mt-5">Kualifikasi</h6>
+                                                <?php
+                                                $syarat = $hasil["syarat"];
+                                                $syaratarray = explode("-", $syarat);
+                                                array_shift($syaratarray);
+                                                ?>
+                                                <p class="card-text">
+                                                    <?php if (!empty($syaratarray)) {
+                                                        echo "<ol>";
+                                                        foreach ($syaratarray as $b) {
+                                                            echo "<li>" . htmlspecialchars(trim($b)) . "</li>";
+                                                        }
+                                                        echo "</ol>";
+                                                    } ?>
+                                                </p>
+                                        <?php }
+                                        } ?>
                                     </div>
                                 </div>
                             </div>
