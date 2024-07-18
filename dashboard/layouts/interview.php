@@ -1,6 +1,22 @@
 <?php
 require "functions.php";
 
+if (isset($_POST["lolos"])) {
+    if (lolos($_POST) > 0) {
+        $berhasil = true;
+    } else {
+        $error = true;
+    }
+}
+
+if (isset($_POST["tolak"])) {
+    if (tolak($_POST) > 0) {
+        $berhasil = true;
+    } else {
+        $error = true;
+    }
+}
+
 ?>
 <!DOCTYPE html>
 
@@ -139,6 +155,16 @@ require "functions.php";
 
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <div class="row">
+
+                            <!-- ALERT -->
+                            <?php if (isset($error)) : ?>
+                                <div class="alert alert-danger" role="alert">Gagal merubah status kandidat!</div>
+                            <?php endif; ?>
+                            <?php if (isset($berhasil)) : ?>
+                                <div class="alert alert-success" role="alert">Berhasil merubah status kandidat!</div>
+                            <?php endif; ?>
+                            <!-- END ALERT -->
+
                             <!-- Tabel -->
                             <div class="col-12 col-lg order-2 order-md-3 order-lg-2 mb-4">
                                 <!-- Basic Bootstrap Table -->
@@ -161,39 +187,206 @@ require "functions.php";
                                                     <tbody class="table-border-bottom-0">
                                                         <?php
                                                         $i = 1;
-                                                        $interview = mysqli_query($conn, "SELECT * FROM info_pendaftaran WHERE status = 'INTERVIEW' ");
-                                                        while ($hasil = mysqli_fetch_array($interview)) {
-                                                            $nik = $hasil["NIK"];
-                                                            $pelamar = mysqli_query($conn, "SELECT * FROM pelamar WHERE NIK = $nik ");
-                                                            while ($info_pelamar = mysqli_fetch_array($pelamar)) {
-                                                                $tanggal_interview = date_create($hasil["tanggal_interview"]);
+                                                        $interview = mysqli_query(
+                                                            $conn,
+                                                            "SELECT *, dftr.status as status_dftr FROM info_pendaftaran dftr 
+                                                                inner join info_lowongan lwgn 
+                                                                on lwgn.id_lowongan = dftr.id_lowongan
+                                                                inner join akun akn
+                                                                on akn.id_NIK = dftr.id_NIK
+                                                                left join pelamar plmr
+                                                                on plmr.id_NIK = dftr.id_NIK
+                                                                WHERE dftr.status = 'INTERVIEW' AND lwgn.status = 1"
+                                                        );
+                                                        if (isset($_POST['select_posisi'])) {
+                                                            $id_select = trim($_POST['select_posisi']);
+                                                            if ($id_select == "all") {
+                                                                $data = $interview;
+                                                            } else {
+                                                                $data = mysqli_query(
+                                                                    $conn,
+                                                                    "SELECT *, dftr.status as status_dftr FROM info_pendaftaran dftr 
+                                                                inner join info_lowongan lwgn 
+                                                                on lwgn.id_lowongan = dftr.id_lowongan
+                                                                inner join akun akn
+                                                                on akn.id_NIK = dftr.id_NIK
+                                                                left join pelamar plmr
+                                                                on plmr.id_NIK = dftr.id_NIK
+                                                                    WHERE dftr.status = 'INTERVIEW' AND dftr.id_lowongan = '$id_select' AND lwgn.status = 1"
+                                                                );
+                                                            }
+                                                        } else {
+                                                            $data = $interview;
+                                                        }
+
+                                                        while ($hasil = mysqli_fetch_array($data)) {
+                                                            $tanggal_interview = date_create($hasil["tanggal_interview"]);
                                                         ?>
 
-                                                                <tr>
-                                                                    <td><?= $i; ?></td>
-                                                                    <td><?= $info_pelamar["nama_lengkap"]; ?></td>
-                                                                    <td><?= $hasil["posisi"]; ?></td>
-                                                                    <td><?= $hasil["divisi"]; ?></td>
-                                                                    <td><?= date_format($tanggal_interview, "Y/m/d"); ?></td>
-                                                                    <td><?= date_format($tanggal_interview, "H:i"); ?></td>
-                                                                    <td>
-                                                                        <div class="dropdown">
-                                                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                                                            </button>
-                                                                            <div class="dropdown-menu">
-                                                                                <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-detail me-1'></i> Detail</a>
-                                                                                <a class="dropdown-item" href="javascript:void(0);"><i class='bx bxs-file-pdf me-1'></i> Link CV</a>
-                                                                                <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-file me-1"></i> Link Portofolio</a>
-                                                                                <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-check me-1"></i> Lolos</a>
-                                                                                <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-x me-1"></i> Tolak</a>
-                                                                            </div>
+                                                            <tr>
+                                                                <td><?= $i; ?></td>
+                                                                <td><?= $hasil["nama_lengkap"]; ?></td>
+                                                                <td><?= $hasil["posisi"]; ?></td>
+                                                                <td><?= $hasil["divisi"]; ?></td>
+                                                                <td><?= date_format($tanggal_interview, "Y/m/d"); ?></td>
+                                                                <td><?= date_format($tanggal_interview, "H:i"); ?></td>
+                                                                <td>
+                                                                    <div class="dropdown">
+                                                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                                                        </button>
+                                                                        <div class="dropdown-menu">
+                                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#detail<?= $hasil["id_pendaftaran"]; ?>"><i class='bx bx-detail me-1'></i> Detail</a>
+                                                                            <a class="dropdown-item" href="javascript:void(0);"><i class='bx bxs-file-pdf me-1'></i> Link CV</a>
+                                                                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-file me-1"></i> Link Portofolio</a>
+                                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#lolosinter<?= $hasil["id_pendaftaran"]; ?>"><i class="bx bx-check me-1"></i> Lolos</a>
+                                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#tolakinter<?= $hasil["id_pendaftaran"]; ?>"><i class="bx bx-x me-1"></i> Tolak</a>
                                                                         </div>
-                                                                    </td>
-                                                                </tr>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+
+                                                            <!-- Detail Modal -->
+                                                            <div class="modal fade" id="detail<?= $hasil["id_pendaftaran"]; ?>" tabindex="-1" aria-hidden="true">
+                                                                <div class="modal-dialog modal-lg" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalLabel3">Detail Kandidat</h5>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <div class="row">
+                                                                                <div class="col-4">
+                                                                                    <img src="../assets/img/avatars/1.png" alt="">
+                                                                                </div>
+                                                                                <div class="col-8">
+                                                                                    <div class="row">
+                                                                                        <div class="col mb-3">
+                                                                                            <label for="nik" class="form-label">NIK</label>
+                                                                                            <input type="text" readonly class="form-control-plaintext" id="nik" value="<?= $hasil["NIK"]; ?>" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col mb-3">
+                                                                                            <label for="nama" class="form-label">Nama Lengkap</label>
+                                                                                            <input type="text" readonly class="form-control-plaintext" id="nama" value="<?= $hasil["nama_lengkap"]; ?>" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col mb-3">
+                                                                                            <label for="email" class="form-label">Email</label>
+                                                                                            <input type="text" readonly class="form-control-plaintext" id="email" value="<?= $hasil["email"]; ?>" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col mb-3">
+                                                                                            <label for="nama" class="form-label">Link Linkedin</label>
+                                                                                            <input type="text" readonly class="form-control-plaintext" id="linkedin" value="<?= $hasil["link_linkedin"]; ?>" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col mb-3">
+                                                                                            <label for="nama" class="form-label">Link Instagram</label>
+                                                                                            <input type="text" readonly class="form-control-plaintext" id="ig" value="<?= $hasil["link_instagram"]; ?>" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col mb-3">
+                                                                                            <label for="nama" class="form-label">Dokumen CV</label>
+                                                                                            <input type="text" readonly class="form-control-plaintext" id="cv" value="<?= $hasil["dokumen_cv"]; ?>" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col mb-3">
+                                                                                            <label for="nama" class="form-label">Dokumen Portofolio</label>
+                                                                                            <input type="text" readonly class="form-control-plaintext" id="porto" value="<?= $hasil["dokumen_portofolio"]; ?>" />
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>
+                                                                            <!-- <div class="row g-2">
+                                                                        <div class="col mb-0">
+                                                                            <label for="emailLarge" class="form-label">Email</label>
+                                                                            <input type="email" id="emailLarge" class="form-control" placeholder="xxxx@xxx.xx" />
+                                                                        </div>
+                                                                        <div class="col mb-0">
+                                                                            <label for="dobLarge" class="form-label">DOB</label>
+                                                                            <input type="date" id="dobLarge" class="form-control" />
+                                                                        </div>
+                                                                    </div> -->
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                                                Close
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- MODAL LOLOS -->
+                                                            <div class="modal fade" id="lolosinter<?= $hasil["id_pendaftaran"]; ?>" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered">
+                                                                    <div class="modal-content">
+                                                                        <form action="" method="post">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="modalToggleLabel">Konfirmasi Lolos Interview</h5>
+                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <input id="id" type="hidden" name="id" value="<?= $hasil["id_pendaftaran"]; ?>">
+                                                                                <input id="status" type="hidden" name="status" value="<?= $hasil["status_dftr"]; ?>">
+                                                                                Apakah Anda yakin ingin meloloskan kandidat <b><?= $hasil["nama_lengkap"]; ?></b>
+                                                                                pada posisi <b><?= $hasil["posisi"]; ?></b>
+                                                                                di divisi <b><?= $hasil["divisi"]; ?></b>
+                                                                                ke tahap selanjutnya?
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                                                    Close
+                                                                                </button>
+                                                                                <button class="btn btn-primary" type="submit" name="lolos">
+                                                                                    Lolos
+                                                                                </button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- MODAL TOLAK -->
+                                                            <div class="modal fade" id="tolakinter<?= $hasil["id_pendaftaran"]; ?>" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered">
+                                                                    <div class="modal-content">
+                                                                        <form action="" method="post">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="modalToggleLabel">Konfirmasi Tolak Interview</h5>
+                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <input id="id" type="hidden" name="id" value="<?= $hasil["id_pendaftaran"]; ?>">
+                                                                                Apakah Anda yakin ingin menolak kandidat <b><?= $hasil["nama_lengkap"]; ?></b>
+                                                                                pada posisi <b><?= $hasil["posisi"]; ?></b>
+                                                                                di divisi <b><?= $hasil["divisi"]; ?></b>
+                                                                                ?
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                                                    Close
+                                                                                </button>
+                                                                                <button class="btn btn-primary" type="submit" name="tolak">
+                                                                                    Tolak
+                                                                                </button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
                                                         <?php $i++;
-                                                            }
-                                                        } ?>
+                                                        }
+                                                        ?>
 
                                                     </tbody>
                                                 </table>

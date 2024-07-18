@@ -212,9 +212,9 @@ if (isset($_POST["input_data"])) {
                                                 <div class="col-sm-10">
                                                     <select class="form-select" id="tipe-lamaran" name="tipelamaran" required>
                                                         <option disabled selected>Tipe Lamaran</option>
-                                                        <option value="permanent">Permanent</option>
-                                                        <option value="contract">Contract</option>
-                                                        <option value="intern">Internship/Magang</option>
+                                                        <option value="Permanent">Permanent</option>
+                                                        <option value="Contract">Contract</option>
+                                                        <option value="Internship">Internship/Magang</option>
                                                     </select>
                                                 </div>
                                             </div>

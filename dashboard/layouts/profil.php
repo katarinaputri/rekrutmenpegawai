@@ -135,6 +135,9 @@
 
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <div class="row">
+                            <?php
+                            $profil = mysqli_query($conn, "SELECT * FROM akun a inner join pelamar pl on pl.id_NIK = a.id_NIK");
+                            ?>
                             <div class="col-md-6 col-lg-4 mb-3">
                                 <div class="card mx-auto">
                                     <div class="card-body">

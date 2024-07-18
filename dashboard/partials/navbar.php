@@ -8,16 +8,31 @@
     </div>
 
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-        <div class="btn-group">
-            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="posisi" data-bs-toggle="dropdown" data-bs-auto-close="inside" aria-expanded="false">
-                Posisi
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="posisi">
-                <li><a class="dropdown-item" href="javascript:void(0)">Menu item</a></li>
-                <li><a class="dropdown-item" href="javascript:void(0)">Menu item</a></li>
-                <li><a class="dropdown-item" href="javascript:void(0)">Menu item</a></li>
-            </ul>
-        </div>
+        <!-- FORM SELECT KANTOR -->
+        <form action="" method="post">
+            <div class="input-group">
+                <select class="form-select form-select-sm" name="select_posisi" required>
+                    <option value="all">Semua Posisi</option>
+                    <?php
+                    $sql = mysqli_query($conn, "SELECT * FROM info_lowongan WHERE status = 1");
+                    while ($data = mysqli_fetch_array($sql)) {
+                        $ket = "";
+                        if (isset($_POST['select_posisi'])) {
+                            $select_posisi = trim($_POST['select_posisi']);
+                            if ($select_posisi == $data['id_lowongan']) {
+                                $ket = "selected";
+                            }
+                        }
+                    ?>
+                        <option <?= $ket; ?> value="<?= $data['id_lowongan'] ?>">
+                            <?= $data['posisi']; ?>&nbsp;-&nbsp; <?= $data['divisi']; ?>
+                        </option>
+                    <?php } ?>
+                </select>
+                <button class="btn btn-sm btn-primary" type="submit" name="search">Search</button>
+            </div>
+        </form>
+        <!-- FORM SELECT KANTOR END -->
 
         <ul class="navbar-nav flex-row align-items-center ms-auto">
             <!-- User -->

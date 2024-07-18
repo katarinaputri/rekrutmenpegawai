@@ -1,3 +1,52 @@
+<?php
+//menghubungkan php dengan koneksi database
+require 'functions.php';
+
+if (isset($_POST["masuk"])) {
+
+    // menangkap data yang dikirim dari form login
+    $emailusername = $_POST['emailusername'];
+    $password = $_POST['password'];
+
+    // menyeleksi data user dengan username dan password yang sesuai
+    $login = mysqli_query($conn, " SELECT * FROM akun WHERE ( username='$emailusername' OR email ='$emailusername') AND password='$password' ");
+    // menghitung jumlah data yang ditemukan
+    $cek = mysqli_num_rows($login);
+
+    // cek apakah username dan password di temukan pada database
+    if ($cek > 0) {
+
+        $data = mysqli_fetch_assoc($login);
+
+        // cek jika user login sebagai admin
+        if ($data['status'] == "admin") {
+
+            // buat session login dan username
+            $_SESSION['id_NIK']    = $data['id_NIK'];
+            $_SESSION['username'] = $data['username'];
+            $_SESSION['username'] = $data['username'];
+            $_SESSION['status'] = "admin";
+            $_SESSION['login'] = true;
+            // alihkan ke halaman dashboard admin
+            header("location: index.php");
+
+            // cek jika user login sebagai pengurus
+        } else if ($data['status'] == "pelamar") {
+            // buat session login dan username
+            // $_SESSION['id_user']    = $data['id_user'];
+            // $_SESSION['username'] = $username;
+            // $_SESSION['status'] = "pelamar";
+            // $_SESSION['login'] = true;
+            // alihkan ke halaman dashboard pengurus
+            // header("location:../../anggota/dist/index.php");
+            header("location: index.php");
+        }
+    }
+
+    $error = true;
+}
+?>
+
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-wide customizer-hide" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
@@ -60,10 +109,10 @@
                         <h4 class="mb-2">Welcome to Info Karir! 👋</h4>
                         <p class="mb-4">Please sign-in to your account and start the adventure</p>
 
-                        <form id="formAuthentication" class="mb-3" action="index.php">
+                        <form id="formAuthentication" class="mb-3" action="" method="post">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email or Username</label>
-                                <input type="text" class="form-control" id="email" name="email-username" placeholder="Enter your email or username" autofocus required />
+                                <input type="text" class="form-control" id="email" name="emailusername" placeholder="Enter your email or username" autofocus required />
                             </div>
                             <div class="mb-5 form-password-toggle">
                                 <div class="d-flex justify-content-between">
@@ -83,8 +132,13 @@
                                     <label class="form-check-label" for="remember-me"> Remember Me </label>
                                 </div>
                             </div> -->
+                            <!-- ALERT -->
+                            <?php if (isset($error)) : ?>
+                                <div class="alert alert-danger" role="alert">Gagal Login kak</div>
+                            <?php endif; ?>
+
                             <div class="mb-3">
-                                <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
+                                <button class="btn btn-primary d-grid w-100" type="submit" name="masuk">Sign in</button>
                             </div>
                         </form>
 

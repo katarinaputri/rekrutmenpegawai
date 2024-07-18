@@ -162,8 +162,29 @@ require "functions.php";
                                                                 <div class="row">
                                                                     <h5 class="card-title text-nowrap mb-2">
                                                                         <?php
-                                                                        $pendaftar = mysqli_query($conn, "SELECT * FROM info_pendaftaran WHERE status ='TERDAFTAR' ");
-                                                                        $jumlah_pendaftar = mysqli_num_rows($pendaftar);
+                                                                        $pendaftar = mysqli_query(
+                                                                            $conn,
+                                                                            "SELECT * FROM info_pendaftaran dftr inner join info_lowongan lwgn 
+                                                                        on lwgn.id_lowongan = dftr.id_lowongan 
+                                                                        WHERE dftr.status ='TERDAFTAR' AND lwgn.status = 1 "
+                                                                        );
+                                                                        if (isset($_POST['select_posisi'])) {
+                                                                            $id_select = trim($_POST['select_posisi']);
+                                                                            if ($id_select == "all") {
+                                                                                $data = $pendaftar;
+                                                                            } else {
+                                                                                $data = mysqli_query(
+                                                                                    $conn,
+                                                                                    "SELECT * FROM info_pendaftaran dftr inner join info_lowongan lwgn 
+                                                                                on lwgn.id_lowongan = dftr.id_lowongan 
+                                                                                WHERE dftr.status ='TERDAFTAR' AND dftr.id_lowongan = '$id_select' AND lwgn.status = 1"
+                                                                                );
+                                                                            }
+                                                                        } else {
+                                                                            $data = $pendaftar;
+                                                                        }
+
+                                                                        $jumlah_pendaftar = mysqli_num_rows($data);
                                                                         echo $jumlah_pendaftar;
                                                                         ?>
                                                                     </h5>
@@ -197,8 +218,29 @@ require "functions.php";
                                                                 <div class="row">
                                                                     <h5 class="card-title text-nowrap mb-2">
                                                                         <?php
-                                                                        $lolos_berkas = mysqli_query($conn, "SELECT * FROM info_pendaftaran WHERE status ='LOLOS BERKAS' ");
-                                                                        $jumlah_lolos_berkas = mysqli_num_rows($lolos_berkas);
+                                                                        $lolos_berkas = mysqli_query(
+                                                                            $conn,
+                                                                            "SELECT * FROM info_pendaftaran dftr inner join info_lowongan lwgn
+                                                                        on lwgn.id_lowongan = dftr.id_lowongan 
+                                                                        WHERE dftr.status ='LOLOS BERKAS' AND lwgn.status = 1 "
+                                                                        );
+                                                                        if (isset($_POST['select_posisi'])) {
+                                                                            $id_select = trim($_POST['select_posisi']);
+                                                                            if ($id_select == "all") {
+                                                                                $data = $lolos_berkas;
+                                                                            } else {
+                                                                                $data = mysqli_query(
+                                                                                    $conn,
+                                                                                    "SELECT * FROM info_pendaftaran dftr inner join info_lowongan lwgn
+                                                                                on lwgn.id_lowongan = dftr.id_lowongan 
+                                                                                WHERE dftr.status ='LOLOS BERKAS' AND dftr.id_lowongan = '$id_select' AND lwgn.status = 1"
+                                                                                );
+                                                                            }
+                                                                        } else {
+                                                                            $data = $lolos_berkas;
+                                                                        }
+
+                                                                        $jumlah_lolos_berkas = mysqli_num_rows($data);
                                                                         echo $jumlah_lolos_berkas;
                                                                         ?>
                                                                     </h5>
@@ -232,8 +274,29 @@ require "functions.php";
                                                                 <div class="row">
                                                                     <h5 class="card-title text-nowrap mb-2">
                                                                         <?php
-                                                                        $interview = mysqli_query($conn, "SELECT * FROM info_pendaftaran WHERE status ='INTERVIEW' ");
-                                                                        $jumlah_interview = mysqli_num_rows($interview);
+                                                                        $interview = mysqli_query(
+                                                                            $conn,
+                                                                            "SELECT * FROM info_pendaftaran dftr inner join info_lowongan lwgn
+                                                                            on lwgn.id_lowongan = dftr.id_lowongan 
+                                                                            WHERE dftr.status ='INTERVIEW' AND lwgn.status = 1"
+                                                                        );
+                                                                        if (isset($_POST['select_posisi'])) {
+                                                                            $id_select = trim($_POST['select_posisi']);
+                                                                            if ($id_select == "all") {
+                                                                                $data = $interview;
+                                                                            } else {
+                                                                                $data = mysqli_query(
+                                                                                    $conn,
+                                                                                    "SELECT * FROM info_pendaftaran dftr inner join info_lowongan lwgn
+                                                                                    on lwgn.id_lowongan = dftr.id_lowongan 
+                                                                                    WHERE dftr.status ='INTERVIEW' AND dftr.id_lowongan = '$id_select' AND lwgn.status = 1"
+                                                                                );
+                                                                            }
+                                                                        } else {
+                                                                            $data = $interview;
+                                                                        }
+
+                                                                        $jumlah_interview = mysqli_num_rows($data);
                                                                         echo $jumlah_interview;
                                                                         ?>
                                                                     </h5>
@@ -267,8 +330,29 @@ require "functions.php";
                                                                 <div class="row">
                                                                     <h5 class="card-title text-nowrap mb-2">
                                                                         <?php
-                                                                        $offering = mysqli_query($conn, "SELECT * FROM info_pendaftaran WHERE status ='DITERIMA' ");
-                                                                        $jumlah_offering = mysqli_num_rows($offering);
+                                                                        $offering = mysqli_query(
+                                                                            $conn,
+                                                                            "SELECT * FROM info_pendaftaran dftr inner join info_lowongan lwgn 
+                                                                        on lwgn.id_lowongan = dftr.id_lowongan 
+                                                                        WHERE dftr.status ='DITERIMA' AND lwgn.status = 1"
+                                                                        );
+                                                                        if (isset($_POST['select_posisi'])) {
+                                                                            $id_select = trim($_POST['select_posisi']);
+                                                                            if ($id_select == "all") {
+                                                                                $data = $offering;
+                                                                            } else {
+                                                                                $data = mysqli_query(
+                                                                                    $conn,
+                                                                                    "SELECT * FROM info_pendaftaran dftr inner join info_lowongan lwgn
+                                                                                on lwgn.id_lowongan = dftr.id_lowongan 
+                                                                                WHERE dftr.status ='DITERIMA' AND dftr.id_lowongan = '$id_select' AND lwgn.status = 1"
+                                                                                );
+                                                                            }
+                                                                        } else {
+                                                                            $data = $offering;
+                                                                        }
+
+                                                                        $jumlah_offering = mysqli_num_rows($data);
                                                                         echo $jumlah_offering;
                                                                         ?>
                                                                     </h5>
@@ -306,14 +390,34 @@ require "functions.php";
                                                     </thead>
                                                     <tbody class="table-border-bottom-0">
                                                         <?php
-                                                        $interview_hari_ini = mysqli_query($conn, "SELECT * FROM info_pendaftaran WHERE DATE_FORMAT(tanggal_interview, '%d') = DAY(curdate())");
-                                                        while ($hasil = mysqli_fetch_array($interview_hari_ini)) {
-                                                            $nik = $hasil["NIK"];
-                                                            $nama_lengkap = mysqli_query($conn, "SELECT * FROM pelamar WHERE NIK = '$nik' ");
-                                                            $nama = mysqli_fetch_array($nama_lengkap);
+                                                        $interview_hari_ini = mysqli_query(
+                                                            $conn,
+                                                            "SELECT * FROM info_pendaftaran dftr inner join info_lowongan lwgn
+                                                            on lwgn.id_lowongan = dftr.id_lowongan
+                                                            inner join akun akn
+                                                            on akn.id_NIK = dftr.id_NIK
+                                                            WHERE DATE_FORMAT(tanggal_interview, '%d') = DAY(curdate()) AND lwgn.status = 1"
+                                                        );
+                                                        if (isset($_POST['select_posisi'])) {
+                                                            $id_select = trim($_POST['select_posisi']);
+                                                            if ($id_select == "all") {
+                                                                $data = $interview_hari_ini;
+                                                            } else {
+                                                                $data = mysqli_query(
+                                                                    $conn,
+                                                                    "SELECT * FROM info_pendaftaran dftr 
+                                                                    inner join info_lowongan lwgn on lwgn.id_lowongan = dftr.id_lowongan 
+                                                                    inner join akun akn on akn.id_NIK = dftr.id_NIK
+                                                                    WHERE DATE_FORMAT(tanggal_interview, '%d') = DAY(curdate()) AND dftr.id_lowongan = '$id_select' AND lwgn.status = 1"
+                                                                );
+                                                            }
+                                                        } else {
+                                                            $data = $interview_hari_ini;
+                                                        }
+                                                        while ($hasil = mysqli_fetch_array($data)) {
                                                         ?>
                                                             <tr>
-                                                                <td><?= $nama["nama_lengkap"]; ?></td>
+                                                                <td><?= $hasil["nama_lengkap"]; ?></td>
                                                                 <td><?= $hasil["posisi"]; ?></td>
                                                                 <td><?= $hasil["divisi"]; ?></td>
                                                                 <td><?= $hasil["tanggal_interview"]; ?> </td>
@@ -323,8 +427,11 @@ require "functions.php";
                                                                             <i class="bx bx-dots-vertical-rounded"></i>
                                                                         </button>
                                                                         <div class="dropdown-menu">
-                                                                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                                                                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
+                                                                            <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-detail me-1'></i> Detail</a>
+                                                                            <a class="dropdown-item" href="javascript:void(0);"><i class='bx bxs-file-pdf me-1'></i> Link CV</a>
+                                                                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-file me-1"></i> Link Portofolio</a>
+                                                                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-check me-1"></i> Lolos</a>
+                                                                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-x me-1"></i> Tolak</a>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -335,28 +442,40 @@ require "functions.php";
                                             </div>
                                         </div>
                                     </div>
-                                    <!--/ Basic Bootstrap Table -->
-                                    <div class="col-3">
-                                        <div class="card">
-                                            <div class="d-flex align-items-end row">
-                                                <div class="col-sm-7">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title text-primary">Nama Posisi</h5>
-                                                        <p class="mb-4">
-                                                            Nama Divisi
-                                                        </p>
+                                    <?php
+                                    if (isset($_POST['select_posisi'])) {
+                                        $id_select = trim($_POST['select_posisi']);
+                                        $data = mysqli_query($conn, "SELECT * FROM info_lowongan WHERE id_lowongan ='$id_select'");
+                                        while ($hasil = mysqli_fetch_array($data)) {
 
-                                                        <a href="javascript:;" class="btn btn-sm btn-outline-primary">Selengkapnya!</a>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-5 text-center text-sm-left">
-                                                    <div class="card-body pb-0 px-0 px-md-4">
-                                                        <img src="../assets/img/illustrations/man-with-laptop-light.png" height="140" alt="View Badge User" data-app-dark-img="illustrations/man-with-laptop-dark.png" data-app-light-img="illustrations/man-with-laptop-light.png" />
+                                    ?>
+                                            <!--/ Basic Bootstrap Table -->
+                                            <div class="col-3">
+                                                <div class="card">
+                                                    <div class="d-flex align-items-end row">
+                                                        <div class="col-sm-7">
+                                                            <div class="card-body">
+                                                                <h7 class="card-title text-primary"><?= $hasil["posisi"]; ?></h7>
+                                                                <p class="mb-4" style="font-size: small;">
+                                                                    <?= $hasil["divisi"]; ?>
+                                                                </p>
+                                                                <a href="detail_lowongan.php?id=<?= $hasil["id_lowongan"] ?>" class="btn btn-sm btn-outline-primary">Selengkapnya!</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-5 text-center text-sm-left">
+                                                            <div class="card-body pb-0 px-0 px-md-4">
+                                                                <img src="../assets/img/illustrations/man-with-laptop-light.png" height="140" alt="View Badge User" data-app-dark-img="illustrations/man-with-laptop-dark.png" data-app-light-img="illustrations/man-with-laptop-light.png" />
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
+
+                                    <?php
+                                        }
+                                    }
+                                    ?>
+
                                 </div>
                             </div>
                             <!--/ Tabel -->

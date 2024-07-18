@@ -177,6 +177,7 @@ if (isset($_POST["buka"])) {
 
                             <div class="tab-content" style="background: none;">
 
+                                <!-- LOWONGAN BUKA -->
                                 <div class="tab-pane fade show active" id="masihbuka" role="tabpanel">
                                     <div class="row">
                                         <div class="col-12 col-md-8 col-lg order-3 order-md-2">
@@ -199,7 +200,7 @@ if (isset($_POST["buka"])) {
                                                                                 <i class="bx bx-dots-vertical-rounded"></i>
                                                                             </button>
                                                                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                                                                <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#tutuplowongan<?= $hasil["id"]; ?>">Tutup Lowongan</a>
+                                                                                <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#tutuplowongan<?= $hasil["id_lowongan"]; ?>">Tutup Lowongan</a>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -212,13 +213,13 @@ if (isset($_POST["buka"])) {
                                                                     echo $first_sentence . ".";
                                                                     ?>
                                                                 </p>
-                                                                <a href="detail_lowongan.php?id=<?= $hasil["id"] ?>" class="card-link">Selengkapnya!</a>
+                                                                <a href="detail_lowongan.php?id=<?= $hasil["id_lowongan"] ?>" class="card-link">Selengkapnya!</a>
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                     <!-- MODAL TUTUP LOWONGAN -->
-                                                    <div class="modal fade" id="tutuplowongan<?= $hasil["id"]; ?>" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
+                                                    <div class="modal fade" id="tutuplowongan<?= $hasil["id_lowongan"]; ?>" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
                                                         <div class="modal-dialog modal-dialog-centered">
                                                             <div class="modal-content">
                                                                 <form action="" method="post">
@@ -227,7 +228,7 @@ if (isset($_POST["buka"])) {
                                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        <input id="id" type="hidden" name="id" value="<?= $hasil["id"]; ?>">
+                                                                        <input id="id" type="hidden" name="id" value="<?= $hasil["id_lowongan"]; ?>">
                                                                         Apakah Anda yakin ingin menutup lowongan dengan
                                                                         posisi <b><?= $hasil["posisi"]; ?></b>
                                                                         di divisi <b><?= $hasil["divisi"]; ?></b>?
@@ -250,6 +251,7 @@ if (isset($_POST["buka"])) {
                                     </div>
                                 </div>
 
+                                <!-- LOWONGAN TUTUP -->
                                 <div class="tab-pane fade" id="sudahtutup" role="tabpanel">
                                     <div class="row">
                                         <div class="col-12 col-md-8 col-lg order-3 order-md-2">
@@ -272,7 +274,7 @@ if (isset($_POST["buka"])) {
                                                                                 <i class="bx bx-dots-vertical-rounded"></i>
                                                                             </button>
                                                                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                                                                <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#bukalagi<?= $hasil["id"]; ?>">Buka Kembali Lowongan</a>
+                                                                                <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#bukalagi<?= $hasil["id_lowongan"]; ?>">Buka Kembali Lowongan</a>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -285,13 +287,13 @@ if (isset($_POST["buka"])) {
                                                                     echo $first_sentence . ".";
                                                                     ?>
                                                                 </p>
-                                                                <a href="detail_lowongan.php?id=<?= $hasil["id"] ?>" class="card-link">Selengkapnya!</a>
+                                                                <a href="detail_lowongan.php?id=<?= $hasil["id_lowongan"] ?>" class="card-link">Selengkapnya!</a>
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                     <!-- MODAL Buka LOWONGAN -->
-                                                    <div class="modal fade" id="bukalagi<?= $hasil["id"]; ?>" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
+                                                    <div class="modal fade" id="bukalagi<?= $hasil["id_lowongan"]; ?>" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
                                                         <div class="modal-dialog modal-dialog-centered">
                                                             <div class="modal-content">
                                                                 <form action="" method="post">
@@ -300,7 +302,7 @@ if (isset($_POST["buka"])) {
                                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        <input id="id" type="hidden" name="id" value="<?= $hasil["id"]; ?>">
+                                                                        <input id="id" type="hidden" name="id" value="<?= $hasil["id_lowongan"]; ?>">
                                                                         Apakah Anda yakin ingin membuka kembali lowongan dengan
                                                                         posisi <b><?= $hasil["posisi"]; ?></b>
                                                                         di divisi <b><?= $hasil["divisi"]; ?></b>?

@@ -93,7 +93,7 @@ require "functions.php";
                                                 <div class="card-subtitle text-muted mb-3"><?= $hasil["divisi"]; ?></div>
                                             </div>
                                             <div class="col-3 d-flex justify-content-end align-middle">
-                                                <a href="detail_lowongan.php?id=<?= $hasil["id"] ?>" class="card-link">Selengkapnya</a>
+                                                <a href="detail_lowongan.php?id=<?= $hasil["id_lowongan"] ?>" class="card-link">Selengkapnya</a>
                                             </div>
                                         </div>
                                         <p class="card-text">

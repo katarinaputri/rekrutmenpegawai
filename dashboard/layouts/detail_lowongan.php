@@ -48,10 +48,11 @@ require "functions.php";
                                 <div class="card mb-3">
                                     <img class="card-img-top" src="../assets/img/backgrounds/bg.jpg" alt="Card image cap" style="height: 90pt;" />
                                     <div class="card-body">
+                                        <a href="daftar_lowongan.php"><i class='bx bx-arrow-back mb-3' style="font-size: 35px;color:#566a7f"></i></a>
                                         <?php
                                         if (isset($_GET['id'])) {
                                             $id = $_GET['id'];
-                                            $data_lowongan = mysqli_query($conn, "SELECT * FROM info_lowongan WHERE id = '$id'");
+                                            $data_lowongan = mysqli_query($conn, "SELECT * FROM info_lowongan WHERE id_lowongan = '$id'");
                                             while ($hasil = mysqli_fetch_array($data_lowongan)) {
                                                 $label = $hasil["tipe_lamaran"];
                                         ?>
@@ -60,11 +61,11 @@ require "functions.php";
                                                         <h5 class="card-title"><?= $hasil["posisi"]; ?></h5>
                                                         <div class="card-subtitle mb-2"><?= $hasil["divisi"]; ?></div>
                                                         <div class="card-subtitle text-muted mb-2"><?= $hasil["lokasi_penempatan"]; ?></div>
-                                                        <?php if ($label == "permanent") { ?>
+                                                        <?php if ($label == "Permanent") { ?>
                                                             <span class="badge bg-label-primary mb-3">Full Time</span>
-                                                        <?php } else if ($label == "contract") { ?>
+                                                        <?php } else if ($label == "Contract") { ?>
                                                             <span class="badge bg-label-warning mb-3">Contract</span>
-                                                        <?php } else if ($label == "intern") { ?>
+                                                        <?php } else if ($label == "Internship") { ?>
                                                             <span class="badge bg-label-dark mb-3">Internship</span>
                                                         <?php } ?>
                                                     </div>

@@ -79,6 +79,7 @@ if (isset($_POST["regis"])) {
                             </a>
                         </div> -->
                         <!-- /Logo -->
+
                         <h4 class="mb-2">Adventure starts here 🚀</h4>
                         <p class="mb-4">Create your account!</p>
 
