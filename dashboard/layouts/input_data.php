@@ -1,5 +1,9 @@
 <?php
 require "functions.php";
+session_start();
+$status_akun = $_SESSION['status'];
+$posisi = false;
+
 
 if (isset($_POST["input_data"])) {
     // cek apakah data berhasil ditambahkan atau tidak
@@ -137,7 +141,7 @@ if (isset($_POST["input_data"])) {
             <div class="layout-page">
                 <!-- Navbar -->
 
-                <?php include "../partials/navbar_noposisi.php" ?>
+                <?php include "../partials/navbar.php" ?>
 
                 <!-- / Navbar -->
 

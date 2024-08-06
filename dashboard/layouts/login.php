@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 //menghubungkan php dengan koneksi database
 require 'functions.php';
 
@@ -22,24 +24,24 @@ if (isset($_POST["masuk"])) {
         if ($data['status'] == "admin") {
 
             // buat session login dan username
-            $_SESSION['id_NIK']    = $data['id_NIK'];
-            $_SESSION['username'] = $data['username'];
-            $_SESSION['username'] = $data['username'];
-            $_SESSION['status'] = "admin";
-            $_SESSION['login'] = true;
+            $_SESSION['id_NIK']     = $data['id_NIK'];
+            $_SESSION['username']   = $data['username'];
+            $_SESSION['username']   = $data['username'];
+            $_SESSION['status']     = "admin";
+            $_SESSION['login']      = true;
             // alihkan ke halaman dashboard admin
             header("location: index.php");
 
             // cek jika user login sebagai pengurus
         } else if ($data['status'] == "pelamar") {
             // buat session login dan username
-            // $_SESSION['id_user']    = $data['id_user'];
-            // $_SESSION['username'] = $username;
-            // $_SESSION['status'] = "pelamar";
-            // $_SESSION['login'] = true;
+            $_SESSION['id_NIK']     = $data['id_NIK'];
+            $_SESSION['username']   = $data['username'];
+            $_SESSION['status']     = "pelamar";
+            $_SESSION['login']      = true;
             // alihkan ke halaman dashboard pengurus
             // header("location:../../anggota/dist/index.php");
-            header("location: index.php");
+            header("location: daftar_lowongan.php");
         }
     }
 

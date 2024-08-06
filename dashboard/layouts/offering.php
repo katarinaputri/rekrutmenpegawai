@@ -1,5 +1,9 @@
 <?php
 require "functions.php";
+session_start();
+$status_akun = $_SESSION['status'];
+$posisi = true;
+
 
 ?>
 <!DOCTYPE html>
@@ -202,8 +206,8 @@ require "functions.php";
                                                                         </button>
                                                                         <div class="dropdown-menu">
                                                                             <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#detail<?= $hasil["id_pendaftaran"]; ?>"><i class='bx bx-detail me-1'></i> Detail</a>
-                                                                            <a class="dropdown-item" href="javascript:void(0);"><i class='bx bxs-file-pdf me-1'></i> Link CV</a>
-                                                                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-file me-1"></i> Link Portofolio</a>
+                                                                            <a class="dropdown-item" href="../assets/dokumen/cv/<?= $hasil["dokumen_cv"]; ?>"><i class='bx bxs-file-pdf me-1'></i> Link CV</a>
+                                                                            <a class="dropdown-item" href="../assets/dokumen/portofolio/<?= $hasil["dokumen_portofolio"]; ?>"><i class="bx bx-file me-1"></i> Link Portofolio</a>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -245,40 +249,30 @@ require "functions.php";
                                                                                     <div class="row">
                                                                                         <div class="col mb-3">
                                                                                             <label for="nama" class="form-label">Link Linkedin</label>
-                                                                                            <input type="text" readonly class="form-control-plaintext" id="linkedin" value="<?= $hasil["link_linkedin"]; ?>" />
+                                                                                            <a href="www.linkedin.com/in/<?= $hasil["link_linkedin"]; ?>" id="linkedin"><?= $hasil["link_linkedin"]; ?></a>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="row">
                                                                                         <div class="col mb-3">
                                                                                             <label for="nama" class="form-label">Link Instagram</label>
-                                                                                            <input type="text" readonly class="form-control-plaintext" id="ig" value="<?= $hasil["link_instagram"]; ?>" />
+                                                                                            <a href="https://www.instagram.com/<?= $hasil["link_instagram"]; ?>" id="ig"><?= $hasil["link_instagram"]; ?></a>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="row">
                                                                                         <div class="col mb-3">
                                                                                             <label for="nama" class="form-label">Dokumen CV</label>
-                                                                                            <input type="text" readonly class="form-control-plaintext" id="cv" value="<?= $hasil["dokumen_cv"]; ?>" />
+                                                                                            <a href="../assets/dokumen/cv/<?= $hasil["dokumen_cv"]; ?>" id="cv"><?= $hasil["dokumen_cv"]; ?></a>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="row">
                                                                                         <div class="col mb-3">
                                                                                             <label for="nama" class="form-label">Dokumen Portofolio</label>
-                                                                                            <input type="text" readonly class="form-control-plaintext" id="porto" value="<?= $hasil["dokumen_portofolio"]; ?>" />
+                                                                                            <a href="../assets/dokumen/portofolio/<?= $hasil["dokumen_portofolio"]; ?>" id="porto"><?= $hasil["dokumen_portofolio"]; ?></a>
                                                                                         </div>
                                                                                     </div>
 
                                                                                 </div>
                                                                             </div>
-                                                                            <!-- <div class="row g-2">
-                                                                        <div class="col mb-0">
-                                                                            <label for="emailLarge" class="form-label">Email</label>
-                                                                            <input type="email" id="emailLarge" class="form-control" placeholder="xxxx@xxx.xx" />
-                                                                        </div>
-                                                                        <div class="col mb-0">
-                                                                            <label for="dobLarge" class="form-label">DOB</label>
-                                                                            <input type="date" id="dobLarge" class="form-control" />
-                                                                        </div>
-                                                                    </div> -->
                                                                         </div>
                                                                         <div class="modal-footer">
                                                                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">

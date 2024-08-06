@@ -1,5 +1,9 @@
 <?php
 require "functions.php";
+session_start();
+$status_akun = $_SESSION['status'];
+$posisi = false;
+
 
 if (isset($_POST["tutup"])) {
     if (tutuplowongan($_POST) > 0) {
@@ -144,7 +148,7 @@ if (isset($_POST["buka"])) {
             <div class="layout-page">
                 <!-- Navbar -->
 
-                <?php include "../partials/navbar_noposisi.php" ?>
+                <?php include "../partials/navbar.php" ?>
 
                 <!-- / Navbar -->
 
@@ -192,7 +196,9 @@ if (isset($_POST["buka"])) {
                                                                 <div class="row">
                                                                     <div class="col-10">
                                                                         <h5 class="card-title"><?= $hasil["posisi"]; ?></h5>
-                                                                        <div class="card-subtitle text-muted mb-3"><?= $hasil["divisi"]; ?></div>
+                                                                        <div class="card-subtitle text-muted mb-3">
+                                                                            <?= $hasil["divisi"]; ?>
+                                                                        </div>
                                                                     </div>
                                                                     <div class="col-2">
                                                                         <div class="dropdown flex-end">
@@ -207,10 +213,11 @@ if (isset($_POST["buka"])) {
                                                                 </div>
                                                                 <p class="card-text">
                                                                     <?php
-                                                                    $text = $hasil["deskripsi"];
-                                                                    $sentences = explode(".", $text);
-                                                                    $first_sentence = trim($sentences[0]);
-                                                                    echo $first_sentence . ".";
+                                                                    if (strlen($hasil["deskripsi"]) > 150) {
+                                                                        echo substr($hasil["deskripsi"], 0, 150) . "...";
+                                                                    } else {
+                                                                        echo $hasil["deskripsi"];
+                                                                    }
                                                                     ?>
                                                                 </p>
                                                                 <a href="detail_lowongan.php?id=<?= $hasil["id_lowongan"] ?>" class="card-link">Selengkapnya!</a>
@@ -281,10 +288,11 @@ if (isset($_POST["buka"])) {
                                                                 </div>
                                                                 <p class="card-text">
                                                                     <?php
-                                                                    $text = $hasil["deskripsi"];
-                                                                    $sentences = explode(".", $text);
-                                                                    $first_sentence = trim($sentences[0]);
-                                                                    echo $first_sentence . ".";
+                                                                    if (strlen($hasil["deskripsi"]) > 150) {
+                                                                        echo substr($hasil["deskripsi"], 0, 150) . "...";
+                                                                    } else {
+                                                                        echo $hasil["deskripsi"];
+                                                                    }
                                                                     ?>
                                                                 </p>
                                                                 <a href="detail_lowongan.php?id=<?= $hasil["id_lowongan"] ?>" class="card-link">Selengkapnya!</a>

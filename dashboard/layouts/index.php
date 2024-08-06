@@ -1,5 +1,8 @@
 <?php
 require "functions.php";
+session_start();
+$status_akun = $_SESSION['status'];
+$posisi = true;
 ?>
 <!DOCTYPE html>
 
@@ -427,15 +430,144 @@ require "functions.php";
                                                                             <i class="bx bx-dots-vertical-rounded"></i>
                                                                         </button>
                                                                         <div class="dropdown-menu">
-                                                                            <a class="dropdown-item" href="javascript:void(0);"><i class='bx bx-detail me-1'></i> Detail</a>
-                                                                            <a class="dropdown-item" href="javascript:void(0);"><i class='bx bxs-file-pdf me-1'></i> Link CV</a>
-                                                                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-file me-1"></i> Link Portofolio</a>
-                                                                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-check me-1"></i> Lolos</a>
-                                                                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-x me-1"></i> Tolak</a>
+                                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#detail<?= $hasil["id_pendaftaran"]; ?>"><i class='bx bx-detail me-1'></i> Detail</a>
+                                                                            <a class="dropdown-item" href="../assets/dokumen/cv/<?= $hasil["dokumen_cv"]; ?>"><i class='bx bxs-file-pdf me-1'></i> Link CV</a>
+                                                                            <a class="dropdown-item" href="../assets/dokumen/portofolio/<?= $hasil["dokumen_portofolio"]; ?>"><i class="bx bx-file me-1"></i> Link Portofolio</a>
+                                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#lolosinter<?= $hasil["id_pendaftaran"]; ?>"><i class="bx bx-check me-1"></i> Lolos</a>
+                                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#tolakinter<?= $hasil["id_pendaftaran"]; ?>"><i class="bx bx-x me-1"></i> Tolak</a>
                                                                         </div>
                                                                     </div>
                                                                 </td>
                                                             </tr>
+
+                                                            <!-- Detail Modal -->
+                                                            <div class="modal fade" id="detail<?= $hasil["id_pendaftaran"]; ?>" tabindex="-1" aria-hidden="true">
+                                                                <div class="modal-dialog modal-lg" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalLabel3">Detail Kandidat</h5>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <div class="row">
+                                                                                <div class="col-4">
+                                                                                    <img src="../assets/img/avatars/1.png" alt="">
+                                                                                </div>
+                                                                                <div class="col-8">
+                                                                                    <div class="row">
+                                                                                        <div class="col mb-3">
+                                                                                            <label for="nik" class="form-label">NIK</label>
+                                                                                            <input type="text" readonly class="form-control-plaintext" id="nik" value="<?= $hasil["NIK"]; ?>" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col mb-3">
+                                                                                            <label for="nama" class="form-label">Nama Lengkap</label>
+                                                                                            <input type="text" readonly class="form-control-plaintext" id="nama" value="<?= $hasil["nama_lengkap"]; ?>" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col mb-3">
+                                                                                            <label for="email" class="form-label">Email</label>
+                                                                                            <input type="text" readonly class="form-control-plaintext" id="email" value="<?= $hasil["email"]; ?>" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col mb-3">
+                                                                                            <label for="nama" class="form-label">Link Linkedin</label>
+                                                                                            <a href="www.linkedin.com/in/<?= $hasil["link_linkedin"]; ?>" id="linkedin"><?= $hasil["link_linkedin"]; ?></a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col mb-3">
+                                                                                            <label for="nama" class="form-label">Link Instagram</label>
+                                                                                            <a href="https://www.instagram.com/<?= $hasil["link_instagram"]; ?>" id="ig"><?= $hasil["link_instagram"]; ?></a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col mb-3">
+                                                                                            <label for="nama" class="form-label">Dokumen CV</label>
+                                                                                            <a href="../assets/dokumen/cv/<?= $hasil["dokumen_cv"]; ?>" id="cv"><?= $hasil["dokumen_cv"]; ?></a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col mb-3">
+                                                                                            <label for="nama" class="form-label">Dokumen Portofolio</label>
+                                                                                            <a href="../assets/dokumen/portofolio/<?= $hasil["dokumen_portofolio"]; ?>" id="porto"><?= $hasil["dokumen_portofolio"]; ?></a>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                                                Close
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- MODAL LOLOS -->
+                                                            <div class="modal fade" id="lolosinter<?= $hasil["id_pendaftaran"]; ?>" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered">
+                                                                    <div class="modal-content">
+                                                                        <form action="" method="post">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="modalToggleLabel">Konfirmasi Lolos Interview</h5>
+                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <input id="id" type="hidden" name="id" value="<?= $hasil["id_pendaftaran"]; ?>">
+                                                                                <input id="status" type="hidden" name="status" value="<?= $hasil["status_dftr"]; ?>">
+                                                                                Apakah Anda yakin ingin meloloskan kandidat <b><?= $hasil["nama_lengkap"]; ?></b>
+                                                                                pada posisi <b><?= $hasil["posisi"]; ?></b>
+                                                                                di divisi <b><?= $hasil["divisi"]; ?></b>
+                                                                                ke tahap selanjutnya?
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                                                    Close
+                                                                                </button>
+                                                                                <button class="btn btn-primary" type="submit" name="lolos">
+                                                                                    Lolos
+                                                                                </button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- MODAL TOLAK -->
+                                                            <div class="modal fade" id="tolakinter<?= $hasil["id_pendaftaran"]; ?>" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered">
+                                                                    <div class="modal-content">
+                                                                        <form action="" method="post">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="modalToggleLabel">Konfirmasi Tolak Interview</h5>
+                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <input id="id" type="hidden" name="id" value="<?= $hasil["id_pendaftaran"]; ?>">
+                                                                                Apakah Anda yakin ingin menolak kandidat <b><?= $hasil["nama_lengkap"]; ?></b>
+                                                                                pada posisi <b><?= $hasil["posisi"]; ?></b>
+                                                                                di divisi <b><?= $hasil["divisi"]; ?></b>
+                                                                                ?
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                                                    Close
+                                                                                </button>
+                                                                                <button class="btn btn-primary" type="submit" name="tolak">
+                                                                                    Tolak
+                                                                                </button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
                                                         <?php } ?>
                                                     </tbody>
                                                 </table>

@@ -54,3 +54,19 @@
             });
         }, 2000);
     </script>
+
+    <script>
+        function previewImage() {
+            const image = document.querySelector('#upload')
+            const imagePreview = document.querySelector('.img-preview')
+
+            imagePreview.style.display = 'block'
+
+            const oFReader = new FileReader()
+            oFReader.readAsDataURL(image.files[0])
+
+            oFReader.onload = function(oREvent) {
+                imagePreview.src = oREvent.target.result
+            }
+        }
+    </script>
