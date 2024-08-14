@@ -3,6 +3,23 @@ require "functions.php";
 session_start();
 $status_akun = $_SESSION['status'];
 $posisi = true;
+
+if (isset($_POST["lolos"])) {
+    if (lolos($_POST) > 0) {
+        $berhasil = true;
+    } else {
+        $error = true;
+    }
+}
+
+if (isset($_POST["tolak"])) {
+    if (tolak($_POST) > 0) {
+        $berhasil = true;
+    } else {
+        $error = true;
+    }
+}
+
 ?>
 <!DOCTYPE html>
 
@@ -378,6 +395,15 @@ $posisi = true;
                                 <!-- Basic Bootstrap Table -->
                                 <div class="row">
                                     <div class="col-9">
+                                        <!-- ALERT -->
+                                        <?php if (isset($error)) : ?>
+                                            <div class="alert alert-danger" role="alert">Gagal merubah status kandidat!</div>
+                                        <?php endif; ?>
+                                        <?php if (isset($berhasil)) : ?>
+                                            <div class="alert alert-success" role="alert">Berhasil merubah status kandidat!</div>
+                                        <?php endif; ?>
+                                        <!-- END ALERT -->
+
                                         <div class="card">
                                             <h5 class="card-header">Jadwal Interview Hari Ini</h5>
                                             <div class="table-responsive text-nowrap m-3">
@@ -395,11 +421,13 @@ $posisi = true;
                                                         <?php
                                                         $interview_hari_ini = mysqli_query(
                                                             $conn,
-                                                            "SELECT * FROM info_pendaftaran dftr inner join info_lowongan lwgn
+                                                            "SELECT *, dftr.status as status_dftr FROM info_pendaftaran dftr inner join info_lowongan lwgn
                                                             on lwgn.id_lowongan = dftr.id_lowongan
                                                             inner join akun akn
                                                             on akn.id_NIK = dftr.id_NIK
-                                                            WHERE DATE_FORMAT(tanggal_interview, '%d') = DAY(curdate()) AND lwgn.status = 1"
+                                                            left join pelamar plmr
+                                                            on plmr.id_NIK = dftr.id_NIK
+                                                            WHERE DATE_FORMAT(tanggal_interview, '%d') = DAY(curdate()) AND lwgn.status = 1 AND dftr.status = 'INTERVIEW'"
                                                         );
                                                         if (isset($_POST['select_posisi'])) {
                                                             $id_select = trim($_POST['select_posisi']);
@@ -408,10 +436,12 @@ $posisi = true;
                                                             } else {
                                                                 $data = mysqli_query(
                                                                     $conn,
-                                                                    "SELECT * FROM info_pendaftaran dftr 
+                                                                    "SELECT *, dftr.status as status_dftr FROM info_pendaftaran dftr 
                                                                     inner join info_lowongan lwgn on lwgn.id_lowongan = dftr.id_lowongan 
-                                                                    inner join akun akn on akn.id_NIK = dftr.id_NIK
-                                                                    WHERE DATE_FORMAT(tanggal_interview, '%d') = DAY(curdate()) AND dftr.id_lowongan = '$id_select' AND lwgn.status = 1"
+                                                                    inner join akun akn on akn.id_NIK = dftr.id_NIK                                                                
+                                                                    left join pelamar plmr
+                                                                    on plmr.id_NIK = dftr.id_NIK
+                                                                    WHERE DATE_FORMAT(tanggal_interview, '%d') = DAY(curdate()) AND dftr.id_lowongan = '$id_select' AND lwgn.status = 1 AND dftr.status = 'INTERVIEW'"
                                                                 );
                                                             }
                                                         } else {
@@ -538,7 +568,6 @@ $posisi = true;
                                                                     </div>
                                                                 </div>
                                                             </div>
-
                                                             <!-- MODAL TOLAK -->
                                                             <div class="modal fade" id="tolakinter<?= $hasil["id_pendaftaran"]; ?>" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
                                                                 <div class="modal-dialog modal-dialog-centered">

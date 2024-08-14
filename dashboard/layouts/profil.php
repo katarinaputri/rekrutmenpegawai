@@ -146,7 +146,7 @@ if (isset($_POST["simpan"])) {
                                                 <div class="mb-3 row">
                                                     <label for="html5-pass-input" class="col-md-2 col-form-label">Password Baru</label>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" type="password" id="html5-pass-input" name="password_baru" />
+                                                        <input class="form-control" type="password" id="html5-pass-input" name="password_baru" default="" />
                                                     </div>
                                                 </div>
                                                 <div class="row">

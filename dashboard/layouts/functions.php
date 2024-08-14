@@ -20,9 +20,9 @@ function register($data)
     $nama = $data["nama"];
     $username = $data["username"];
     $email = $data["email"];
-    $password = $data["password"];
+    $password = mysqli_real_escape_string($conn, $data["password"]);
 
-    $ceknik = mysqli_query($conn, "SELECT nomor_induk FROM akun WHERE nomor_induk ='$nik'");
+    $ceknik = mysqli_query($conn, "SELECT NIK FROM akun WHERE NIK ='$nik'");
     $cekuname = mysqli_query($conn, "SELECT username FROM akun WHERE username ='$username'");
     $cekemail = mysqli_query($conn, "SELECT email FROM akun WHERE email ='$email'");
 
@@ -52,6 +52,8 @@ function register($data)
     $maxNIK = mysqli_query($conn, "SELECT max(id_NIK) as MAX FROM akun");
     $hasil = mysqli_fetch_array($maxNIK);
     $id_NIK = $hasil['MAX'] + 1;
+
+    $password = password_hash($password, PASSWORD_DEFAULT);
 
     mysqli_query($conn, "INSERT INTO akun VALUES
     ('','$nik','$nama','$email','$username','$password','','pelamar')
@@ -92,7 +94,7 @@ function lolos($data)
 
     if ($status == "INTERVIEW") {
         mysqli_query($conn, "UPDATE info_pendaftaran SET status = 'DITERIMA' WHERE id_pendaftaran = '$id'");
-    } else {
+    } else if ($status == "TERDAFTAR") {
         mysqli_query($conn, "UPDATE info_pendaftaran SET status = 'LOLOS BERKAS' WHERE id_pendaftaran = '$id'");
     }
 
@@ -175,7 +177,7 @@ function profil($data)
     $result = mysqli_query($conn, "SELECT password FROM akun WHERE id_NIK ='$id_nik'");
     $row = mysqli_fetch_assoc($result);
 
-    if ($row && $password == $row['password']) {
+    if ($row && password_verify($password, $row['password'])) {
         if (isset($_FILES['image']['name'])) {
             $file_data = $_FILES['image']['tmp_name'];
             $fileType = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
@@ -257,10 +259,16 @@ function profil($data)
             }
         }
 
+        if ($new_password != "") {
+            $qwe = password_hash($new_password, PASSWORD_DEFAULT);
+            mysqli_query($conn, "UPDATE akun SET 
+                password = '$qwe' 
+            WHERE id_NIK = '$id_nik'");
+        }
+
         mysqli_query($conn, "UPDATE akun SET 
             nama_lengkap = '$nama',
-            email = '$email',
-            password = '$new_password' 
+            email = '$email'
         WHERE id_NIK = '$id_nik'");
 
         mysqli_query($conn, "UPDATE pelamar SET 

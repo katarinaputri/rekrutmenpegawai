@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 //menghubungkan php dengan koneksi database
 require 'functions.php';
@@ -11,37 +10,35 @@ if (isset($_POST["masuk"])) {
     $password = $_POST['password'];
 
     // menyeleksi data user dengan username dan password yang sesuai
-    $login = mysqli_query($conn, " SELECT * FROM akun WHERE ( username='$emailusername' OR email ='$emailusername') AND password='$password' ");
+    $login = mysqli_query($conn, " SELECT * FROM akun WHERE ( username='$emailusername' OR email ='$emailusername') ");
     // menghitung jumlah data yang ditemukan
     $cek = mysqli_num_rows($login);
 
     // cek apakah username dan password di temukan pada database
     if ($cek > 0) {
+        $data = mysqli_fetch_array($login);
+        if (password_verify($password, $data['password'])) {
+            session_start();
 
-        $data = mysqli_fetch_assoc($login);
-
-        // cek jika user login sebagai admin
-        if ($data['status'] == "admin") {
-
-            // buat session login dan username
             $_SESSION['id_NIK']     = $data['id_NIK'];
             $_SESSION['username']   = $data['username'];
-            $_SESSION['username']   = $data['username'];
-            $_SESSION['status']     = "admin";
-            $_SESSION['login']      = true;
-            // alihkan ke halaman dashboard admin
-            header("location: index.php");
 
-            // cek jika user login sebagai pengurus
-        } else if ($data['status'] == "pelamar") {
-            // buat session login dan username
-            $_SESSION['id_NIK']     = $data['id_NIK'];
-            $_SESSION['username']   = $data['username'];
-            $_SESSION['status']     = "pelamar";
-            $_SESSION['login']      = true;
-            // alihkan ke halaman dashboard pengurus
-            // header("location:../../anggota/dist/index.php");
-            header("location: daftar_lowongan.php");
+            // cek jika user login sebagai admin
+            if ($data['status'] == "admin") {
+                // buat session login dan username
+                $_SESSION['status']     = "admin";
+                $_SESSION['login']      = true;
+                // alihkan ke halaman dashboard admin
+                header("location: index.php");
+
+                // cek jika user login sebagai pengurus
+            } else if ($data['status'] == "pelamar") {
+                // buat session login dan username
+                $_SESSION['status']     = "pelamar";
+                $_SESSION['login']      = true;
+                // alihkan ke halaman dashboard pengurus
+                header("location: daftar_lowongan.php");
+            }
         }
     }
 
@@ -136,7 +133,7 @@ if (isset($_POST["masuk"])) {
                             </div> -->
                             <!-- ALERT -->
                             <?php if (isset($error)) : ?>
-                                <div class="alert alert-danger" role="alert">Gagal Login kak</div>
+                                <div class="alert alert-danger" role="alert">Email atau Username dan Password yang dimasukkan salah!</div>
                             <?php endif; ?>
 
                             <div class="mb-3">

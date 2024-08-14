@@ -4,19 +4,9 @@ require "functions.php";
 if (isset($_POST["regis"])) {
     // cek apakah data berhasil ditambahkan atau tidak
     if (register($_POST) > 0) {
-        echo "
-			<script>
-				alert('Pembuatan akun Berhasil Dilakukan!');
-                document.location.href = 'login.php';
-			</script>
-		";
+        $berhasil = true;
     } else {
-        echo "
-			<script>
-				alert('Pembuatan akun Tidak Berhasil dilakukan!');
-                document.location.href = 'register.php';
-			</script>
-		";
+        $error = true;
     }
 }
 ?>
@@ -120,8 +110,19 @@ if (isset($_POST["regis"])) {
                                     </label>
                                 </div>
                             </div>
+
+                            <!-- ALERT -->
+                            <?php if (isset($error)) : ?>
+                                <div class="alert alert-danger" role="alert">Pembuatan akun Tidak Berhasil dilakukan!</div>
+                            <?php endif; ?>
+                            <?php if (isset($berhasil)) : ?>
+                                <div class="alert alert-success" role="alert">Pembuatan akun Berhasil Dilakukan!</div>
+                            <?php endif; ?>
+                            <!-- END ALERT -->
+
                             <button class="btn btn-primary d-grid w-100" type="submit" name="regis">Sign up</button>
                         </form>
+
 
                         <p class="text-center">
                             <span>Already have an account?</span>
